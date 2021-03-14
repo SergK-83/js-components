@@ -1,0 +1,68 @@
+.smodal {
+
+}
+
+.smodal.open .smodal-overlay {
+    opacity: 1;
+    z-index: 1000;
+}
+
+.smodal-overlay {
+    opacity: 0;
+    z-index: -1;
+}
+
+.smodal-overlay {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .5);
+}
+
+.smodal-container {
+    width: 600px;
+    margin: 100px auto;
+    border-radius: 0;
+    background-color: #fff;
+}
+
+.smodal__container {
+    display: flex;
+    flex-direction: row;
+}
+
+.smodal__header, .smodal__body, .smodal__footer {
+    padding: 10px;
+}
+
+.smodal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.smodal__header-title {
+    font-size: 1.5rem;
+}
+
+.smodal-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    font-size: 35px;
+    opacity: .5;
+}
+
+.s-icon-cross:after {
+    display: inline-block;
+    content: '\00d7';
+}
+
+.smodal__body {
+    flex-grow: 1;
+}
