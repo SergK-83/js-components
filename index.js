@@ -5,7 +5,23 @@ const modal = $.modal({
 	<p>Modal is working</p>
 	<p>Lorem ipsum dolor sit.</p>
 	`,
-	width: '400px'
+	width: '400px',
+	footerButtons: [
+		{
+			text: 'Ok',
+			type: 'primary',
+			handler() {
+
+			}
+		},
+		{
+			text: 'Cancel',
+			type: 'secondary',
+			handler() {
+
+			}
+		}
+	]
 });
 
 const $btnsShowModal = document.querySelectorAll('.action-modal');

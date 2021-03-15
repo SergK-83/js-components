@@ -1,3 +1,12 @@
+function createModalFooter(buttonsList = []) {
+	if (buttonsList.length) {
+		const wrap = document.createElement('div');
+		wrap.classList.add('smodal__footer text-end');
+
+		return wrap;
+	}
+}
+
 function _createModal(options) {
 	const modal = document.createElement('div');
 	const DEFAULT_WIDTH = '600px';
@@ -12,13 +21,13 @@ function _createModal(options) {
         </div>
         ${options.closable ? `<span class="smodal-close" data-close="true"><span class="s-icon-cross"></span></span>` : ''}
       </div>
-      <div class="smodal__body">
+      <div class="smodal__body" data-content>
         ${options.content || ''}
       </div>
-      <div class="smodal__footer text-end">
-        <button class="btn btn-primary">Ok</button>
-        <button class="btn btn-secondary">Cancel</button>
-      </div>
+<!--      <div class="smodal__footer text-end">-->
+<!--        <button class="btn btn-primary">Ok</button>-->
+<!--        <button class="btn btn-secondary">Cancel</button>-->
+<!--      </div>-->
     </div>
   </div>
 	`);
@@ -74,6 +83,9 @@ $.modal = function (options) {
 				el.removeEventListener('click', listener);
 			});
 			destroyed = true;
+		},
+		setContent(html) {
+			$modal.querySelector('[data-content]').innerHTML = html;
 		}
 	});
 };
