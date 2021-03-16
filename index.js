@@ -11,7 +11,7 @@ const toHTML = item => `
         <h5 class="card-title">${item.title}</h5>
         <hr>
         <button class="btn btn-sm btn-primary" data-modal-show="price" data-id="${item.id}">Посмотреть цену</button>
-        <button class="btn btn-sm btn-danger">Удалить</button>
+        <button class="btn btn-sm btn-danger" data-modal-show="remove" data-id="${item.id}">Удалить</button>
       </div>
     </div>
   </div>
@@ -50,20 +50,27 @@ const modalPrice = $.modal({
 document.addEventListener('click', event => {
   event.preventDefault();
   const btnType = event.target.dataset.modalShow;
+  const productId = +event.target.dataset.id;
+  const product = fruits.find(item => item.id === productId);
 
   if (btnType === 'price') {
-    const productId = +event.target.dataset.id;
-    const product = fruits.find(item => item.id === productId);
-
-    console.log(product);
-
     const html = `
       <h5>${product.title}</h5>
       <p class="text-muted">Price <span class="text-primary">${product.price}$</span></p>
     `;
 
-
     modalPrice.setContent(html);
     modalPrice.open();
+  }
+
+  if (btnType === 'remove') {
+    $.confirm({
+      title: 'Product removing',
+      content: `<p class="text-muted">Are you sure you want to remove the  <span class="text-primary">${product.title}</span> product?</p>`
+    }).then(() => {
+      console.log('Remove');
+    }).catch(() => {
+      console.log('Cancel');
+    });
   }
 });
