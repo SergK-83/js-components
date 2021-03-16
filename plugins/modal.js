@@ -77,12 +77,12 @@ $.modal = function (options) {
 
 	const $modalCloseElements = $modal.querySelectorAll('[data-close]');
 
-	const listener = () => {
+	const listenerClose = () => {
 		modalObj.close();
 	};
 
 	$modalCloseElements.forEach((el) => {
-		el.addEventListener('click', listener);
+		el.addEventListener('click', listenerClose);
 	});
 
 	// $modal.addEventListener('click', (event) =>{

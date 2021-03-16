@@ -4,67 +4,66 @@ const fruits = [
   {id: 3, title: 'Mango', price: 40},
 ];
 
-const $content = document.querySelector('#content');
+const toHTML = item => `
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">${item.title}</h5>
+        <hr>
+        <button class="btn btn-sm btn-primary" data-modal-show="price" data-id="${item.id}">Посмотреть цену</button>
+        <button class="btn btn-sm btn-danger">Удалить</button>
+      </div>
+    </div>
+  </div>
+`;
 
-if (fruits.length) {
+function render() {
+  const $content = document.querySelector('#content');
 
-  $content.insertAdjacentHTML('afterbegin', `<div class="row"></div>`);
+  if (fruits.length) {
+    // const html = fruits.map(item => toHTML(item));
+    const html = fruits.map(toHTML).join('');
+    $content.innerHTML = html;
 
-  const $row = $content.querySelector('.row');
-
-  fruits.forEach(item => {
-    const $col = document.createElement('div');
-    $col.classList.add('col');
-    const $card = document.createElement('div');
-    $card.classList.add('card');
-    $card.insertAdjacentHTML('afterbegin', `
-		    <div class="card-body">
-          <h5 class="card-title">${item.title}</h5>
-          <hr>
-          <button class="btn btn-sm btn-primary" data-modal-show>Посмотреть цену</button>
-          <button class="btn btn-sm btn-danger">Удалить</button>
-        </div>
-		`);
-    $col.appendChild($card);
-
-    $row.appendChild($col);
-  });
-
-
-} else {
-  $content.insertAdjacentHTML('afterbegin', `<p class="text-muted">Нет данных для отображения</p>`);
+  } else {
+    $content.innerHTML = `<p class="text-muted">Нет данных для отображения</p>`;
+  }
 }
 
-const modal = $.modal({
-  title: 'Modal title',
+render();
+
+const modalPrice = $.modal({
+  title: 'Product price',
   closable: true,
-  content: `
-	<p>Modal is working</p>
-	<p>Lorem ipsum dolor sit.</p>
-	`,
   width: '400px',
   footerButtons: [
     {
       text: 'Ok',
-      type: 'btn-primary',
-      handler() {
-
-      }
-    },
-    {
-      text: 'Cancel',
       type: 'btn-secondary',
       handler() {
-        console.log(this);
+        modalPrice.close();
       }
     }
   ]
 });
 
-const $btnsShowModal = document.querySelectorAll('[data-modal-show]');
+document.addEventListener('click', event => {
+  event.preventDefault();
+  const btnType = event.target.dataset.modalShow;
 
-$btnsShowModal.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    modal.open();
-  });
+  if (btnType === 'price') {
+    const productId = +event.target.dataset.id;
+    const product = fruits.find(item => item.id === productId);
+
+    console.log(product);
+
+    const html = `
+      <h5>${product.title}</h5>
+      <p class="text-muted">Price <span class="text-primary">${product.price}$</span></p>
+    `;
+
+
+    modalPrice.setContent(html);
+    modalPrice.open();
+  }
 });
