@@ -95,3 +95,11 @@
 .smodal__body {
     flex-grow: 1;
 }
+
+.smodal__footer {
+    text-align: right;
+}
+
+.smodal__footer button + button {
+    margin-left: 5px;
+}

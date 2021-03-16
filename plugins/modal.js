@@ -1,7 +1,24 @@
-function createModalFooter(buttonsList = []) {
+Element.prototype.appendAfter = function (el) {
+	el.parentNode.insertBefore(this, el.nextSibling);
+};
+
+function noop() {};
+
+function _createModalFooter(buttonsList = []) {
 	if (buttonsList.length) {
 		const wrap = document.createElement('div');
-		wrap.classList.add('smodal__footer text-end');
+		wrap.classList.add('smodal__footer');
+
+		buttonsList.forEach(btnData => {
+			const $btnNode = document.createElement('button');
+			$btnNode.classList.add('btn', 'btn-sm', `${btnData.type}`);
+			$btnNode.textContent = btnData.text;
+			// $btnNode.addEventListener('click', btnData.handler);
+
+			$btnNode.onclick = btnData.handler || noop;
+
+			wrap.appendChild($btnNode);
+		});
 
 		return wrap;
 	}
@@ -13,25 +30,24 @@ function _createModal(options) {
 
 	modal.classList.add('smodal');
 	modal.insertAdjacentHTML('afterbegin', `
-	<div class="smodal-overlay" data-close="true">
+	<div class="smodal-overlay" data-close>
     <div class="smodal-container" style="width: ${options.width || DEFAULT_WIDTH}">
       <div class="smodal__header">
         <div class="smodal__header-title">
           ${options.title || 'Modal'}
         </div>
-        ${options.closable ? `<span class="smodal-close" data-close="true"><span class="s-icon-cross"></span></span>` : ''}
+        ${options.closable ? `<span class="smodal-close" data-close><span class="s-icon-cross"></span></span>` : ''}
       </div>
       <div class="smodal__body" data-content>
         ${options.content || ''}
       </div>
-<!--      <div class="smodal__footer text-end">-->
-<!--        <button class="btn btn-primary">Ok</button>-->
-<!--        <button class="btn btn-secondary">Cancel</button>-->
-<!--      </div>-->
     </div>
   </div>
 	`);
+	const footer = _createModalFooter(options.footerButtons);
+	footer.appendAfter(modal.querySelector('.smodal__body'));
 	document.body.appendChild(modal);
+
 	return modal;
 }
 
