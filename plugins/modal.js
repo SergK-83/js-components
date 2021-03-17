@@ -2,7 +2,7 @@ Element.prototype.appendAfter = function (el) {
 	el.parentNode.insertBefore(this, el.nextSibling);
 };
 
-function noop() {};
+function noop() {}
 
 function _createModalFooter(buttonsList = []) {
 	if (buttonsList.length) {
@@ -71,19 +71,24 @@ $.modal = function (options) {
 			setTimeout(() => {
 				$modal.classList.remove('hide');
 				closing = false;
+				if (typeof options.onClose === 'function') {
+					options.onClose();
+				}
 			}, ANIMATION_SPEED);
 		}
 	}
 
-	const $modalCloseElements = $modal.querySelectorAll('[data-close]');
+	if (options.closable) {
+		const $modalCloseElements = $modal.querySelectorAll('[data-close]');
 
-	const listenerClose = () => {
-		modalObj.close();
-	};
+		const listenerClose = () => {
+			modalObj.close();
+		};
 
-	$modalCloseElements.forEach((el) => {
-		el.addEventListener('click', listenerClose);
-	});
+		$modalCloseElements.forEach((el) => {
+			el.addEventListener('click', listenerClose);
+		});
+	}
 
 	// $modal.addEventListener('click', (event) =>{
 	// 	console.log(event.target.dataset.close);
@@ -95,9 +100,11 @@ $.modal = function (options) {
 	return Object.assign(modalObj, {
 		destroy() {
 			$modal.parentNode.removeChild($modal);
-			$modalCloseElements.forEach((el) => {
-				el.removeEventListener('click', listener);
-			});
+			if (options.closable) {
+				$modalCloseElements.forEach((el) => {
+					el.removeEventListener('click', listenerClose);
+				});
+			}
 			destroyed = true;
 		},
 		setContent(html) {

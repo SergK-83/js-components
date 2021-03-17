@@ -1,11 +1,11 @@
-const fruits = [
+let fruits = [
   {id: 1, title: 'Apples', price: 20},
   {id: 2, title: 'Oranges', price: 30},
   {id: 3, title: 'Mango', price: 40},
 ];
 
 const toHTML = item => `
-  <div class="col">
+  <div class="col-4">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">${item.title}</h5>
@@ -69,6 +69,14 @@ document.addEventListener('click', event => {
       content: `<p class="text-muted">Are you sure you want to remove the  <span class="text-primary">${product.title}</span> product?</p>`
     }).then(() => {
       console.log('Remove');
+
+      // const elIndex = fruits.indexOf(product);
+      // fruits.splice(elIndex, 1);
+
+      fruits = fruits.filter(item => item.id !== productId);
+
+      render();
+
     }).catch(() => {
       console.log('Cancel');
     });

@@ -4,6 +4,9 @@ $.confirm = function (options) {
       title: options.title,
       closable: false,
       content: options.content,
+      onClose() {
+        modal.destroy();
+      },
       width: '400px',
       footerButtons: [
         {
